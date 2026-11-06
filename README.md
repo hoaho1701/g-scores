@@ -25,6 +25,7 @@ The user interface is in Vietnamese, since the data and its audience are Vietnam
 | Database | PostgreSQL 16 through the Django ORM |
 | Frontend | Django templates, Bootstrap 5, Chart.js |
 | Package manager | uv |
+| Containers | Docker, Docker Compose |
 | Production | gunicorn, WhiteNoise |
 
 ## Project structure
@@ -55,8 +56,13 @@ g-scores/
 │   ├── subjects.py                  # OOP: ScoreLevel, Subject, SubjectRegistry
 │   ├── urls.py
 │   └── views.py
+├── screenshots/                     # images used in this README
+├── .dockerignore
+├── docker-compose.yml               # app + PostgreSQL
+├── Dockerfile                       # image of the Django app
 ├── manage.py
 ├── pyproject.toml
+├── README.md
 ├── requirements.txt
 └── uv.lock
 ```
@@ -153,6 +159,19 @@ browser ──► urls.py ──► views.py ──► services.py ──► mod
 | `/` | Score lookup |
 | `/report/` | Statistics report |
 | `/top10/` | Top 10 of group A |
+
+## Running with Docker
+
+Only Docker is required (no Python or uv). Port `8000` on your machine must be free.
+
+```bash
+docker compose up --build -d
+docker compose exec web python manage.py seed_scores
+```
+
+The second command imports the data and ends with `Done: 1061605`. Then open http://localhost:8000/.
+
+To stop the app, run `docker compose down`. Add `-v` to also delete the database volume.
 
 ## Environment variables
 
