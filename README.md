@@ -6,7 +6,7 @@ The user interface is in Vietnamese, since the data and its audience are Vietnam
 
 ## Live demo
 
-**TODO: paste the deployed application link here**
+**https://g-scores-aba2.onrender.com**
 
 > On a free hosting plan the app may sleep when idle, so the first request can take about a minute to respond.
 
@@ -87,7 +87,7 @@ browser ──► urls.py ──► views.py ──► services.py ──► mod
 ### Object-oriented subjects (`scores/subjects.py`)
 
 - **`ScoreLevel` (Enum)** represents the 4 score levels. Each member stores its lower bound (inclusive), upper bound (exclusive) and display label, and provides `contains`, `from_score` (which level a score belongs to) and `q` (the matching ORM filter). The thresholds 8, 6 and 4 are defined in one place only, so classifying a score in Python and counting rows in SQL always agree.
-- **`Subject` (frozen dataclass)** represents one subject: the model field name and the display name. `level_of` returns a candidate's level for that subject, and `count_expressions` builds the aggregate expressions that count candidates per level.
+- **`Subject` (frozen dataclass)** represents one subject: the model field name and the display name. `count_expressions` builds the aggregate expressions that count candidates per level.
 - **`SubjectRegistry`** is the only place that lists the 9 subjects and the group A subjects. Adding a subject or another group means changing it here and nowhere else.
 
 ### Key decisions

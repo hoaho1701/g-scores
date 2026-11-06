@@ -58,10 +58,6 @@ class Subject:
     field: str
     name: str
 
-    def level_of(self, student):
-        score = getattr(student, self.field)
-        return ScoreLevel.from_score(score)
-
     def count_expressions(self):
         """Return ``{alias: Count(...)}`` for each level, for use in ``aggregate``."""
         result = {}
@@ -86,11 +82,3 @@ class SubjectRegistry:
         Subject("gdcd", "Giáo dục công dân"),
     ]
     GROUP_A_FIELDS = ["toan", "vat_li", "hoa_hoc"]
-
-    @classmethod
-    def get(cls, field):
-        """Return the subject for a field name, or raise ValueError."""
-        for subject in cls.ALL:
-            if subject.field == field:
-                return subject
-        raise ValueError(f"Subject not found for field: '{field}'")
