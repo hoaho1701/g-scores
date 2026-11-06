@@ -12,7 +12,7 @@ def top_group_a(limit=10):
     for f in fields:
         qs = qs.filter(**{f"{f}__isnull": False})
 
-    qs = qs.annotate(total=sum(F(f) for f in fields))   # tổng điểm bằng F
+    qs = qs.annotate(total=sum(F(f) for f in fields))
     return qs.order_by("-total", "sbd")[:limit]
 
 def build_report():
@@ -20,7 +20,7 @@ def build_report():
     for subject in SubjectRegistry.ALL:
         exprs.update(subject.count_expressions())
 
-    raw = StudentScore.objects.aggregate(**exprs)     # một câu SQL
+    raw = StudentScore.objects.aggregate(**exprs)
 
     labels = [subject.name for subject in SubjectRegistry.ALL]
     datasets = []
