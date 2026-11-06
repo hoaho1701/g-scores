@@ -1,7 +1,8 @@
 from django.urls import path
+
 from . import views
 
-app_name = "scores"
+app_name = "scores"  # namespace used in templates: {% url 'scores:report' %}
 
 urlpatterns = [
     path("", views.lookup, name="lookup"),
