@@ -75,7 +75,7 @@ browser ──► urls.py ──► views.py ──► services.py ──► mod
 ```
 
 - **Views** only read the request, call a service and render a template.
-- **Services** hold every database query, so queries are easy to find and test.
+- **Services** hold every database query, so queries are easy to find.
 - **`subjects.py`** holds the domain rules (which subjects exist, what the score levels are), independent of Django views and templates.
 
 ### Object-oriented subjects (`scores/subjects.py`)
@@ -101,16 +101,6 @@ browser ──► urls.py ──► views.py ──► services.py ──► mod
 - The registration number must be exactly 8 digits (`RegexField`); invalid input shows a message and never reaches the database.
 - A valid number that does not exist shows a "not found" message.
 - Database access goes through the ORM, which parameterises all queries.
-
-### Performance
-
-Measured on a local PostgreSQL with the full dataset (1,061,605 rows): lookup by registration number returns in milliseconds, the top 10 query in about 0.15 s and the full report in about 0.4 s. No caching was needed at this size.
-
-### Possible improvements
-
-- Automated tests for `ScoreLevel` boundaries and the three queries.
-- Cache the report and top 10 results, since the data never changes after import.
-- Additional score groups (B, C, ...) by adding entries to `SubjectRegistry`.
 
 ## Running locally
 
@@ -178,11 +168,17 @@ For a real deployment, set a new `SECRET_KEY`, `DEBUG=0` and the correct `ALLOWE
 
 ## Screenshots
 
-<!-- TODO: add images to a screenshots/ folder, then uncomment the lines below
-![Lookup](screenshots/lookup.png)
-![Report](screenshots/report.png)
-![Top 10](screenshots/top10.png)
--->
+**Score lookup**
+
+<img src="screenshots/lookup.png" width="800" alt="Score lookup page">
+
+**Statistics report**
+
+<img src="screenshots/report.png" width="800" alt="Statistics report page">
+
+**Top 10 of group A**
+
+<img src="screenshots/top10.png" width="800" alt="Top 10 of group A page">
 
 ## Data source
 
