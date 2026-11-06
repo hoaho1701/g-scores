@@ -34,17 +34,17 @@ class Subject:
 
 class SubjectRegistry:
     ALL = [
-        Subject("math", "Toán"),
-        Subject("literature", "Ngữ văn"),
-        Subject("foreign_language", "Ngoại ngữ"),
-        Subject("physics", "Vật lí"),
-        Subject("chemistry", "Hoá học"),
-        Subject("biology", "Sinh học"),
-        Subject("history", "Lịch sử"),
-        Subject("geography", "Địa lí"),
-        Subject("civic_education", "Giáo dục công dân"),
+        Subject("toan", "Toán"),
+        Subject("ngu_van", "Ngữ văn"),
+        Subject("ngoai_ngu", "Ngoại ngữ"),
+        Subject("vat_li", "Vật lí"),
+        Subject("hoa_hoc", "Hoá học"),
+        Subject("sinh_hoc", "Sinh học"),
+        Subject("lich_su", "Lịch sử"),
+        Subject("dia_li", "Địa lí"),
+        Subject("gdcd", "Giáo dục công dân"),
     ]
-    GROUP_A_FIELDS = ["math", "physics", "chemistry"]
+    GROUP_A_FIELDS = ["toan", "vat_li", "hoa_hoc"]
 
     @classmethod
     def get(cls, field):
