@@ -1,26 +1,39 @@
 from dataclasses import dataclass
 from enum import Enum
-
+from django.db.models import Q, Count
 
 class ScoreLevel(Enum):
-    EXCELLENT = "excellent"   # >= 8
-    GOOD = "good"             # 6 <= && < 8
-    AVERAGE = "average"       # 4 <= && < 6
-    WEAK = "weak"             # < 4
+    EXCELLENT = (8, None, ">= 8 điểm")
+    GOOD = (6, 8, "6 - dưới 8 điểm")
+    AVERAGE = (4, 6, "4 - dưới 6 điểm")
+    WEAK = (None, 4, "dưới 4 điểm")
+
+    def __init__(self, low, high, label):
+        self.low = low
+        self.high = high
+        self.label = label
+
+    def contains(self, score):
+        above_low = self.low is None or self.low <= score
+        below_high = self.high is None or self.high > score
+        return above_low and below_high
 
     @classmethod
     def from_score(cls, score):
         if score is None:
             return None
-        elif score >= 8:
-            return cls.EXCELLENT
-        elif score >= 6:
-            return cls.GOOD
-        elif score >= 4:
-            return cls.AVERAGE
-        else:
-            return cls.WEAK
+        for level in cls:
+            if level.contains(score):
+                return level
+        return None
 
+    def q(self, field):
+        cond = Q()
+        if self.low is not None:
+            cond &= Q(**{f"{field}__gte": self.low})
+        if self.high is not None:
+            cond &= Q(**{f"{field}__lt": self.high})
+        return cond
 
 @dataclass(frozen=True)
 class Subject:
@@ -31,6 +44,12 @@ class Subject:
         score = getattr(student, self.field)
         return ScoreLevel.from_score(score)
 
+    def count_expressions(self):
+        result = {}
+        for level in ScoreLevel:
+            alias = f"{self.field}_{level.name.lower()}"
+            result[alias] = Count("id", filter=level.q(self.field))
+        return result
 
 class SubjectRegistry:
     ALL = [
